@@ -1,0 +1,3 @@
+module Stockfighter
+  VERSION = "0.0.1"
+end
