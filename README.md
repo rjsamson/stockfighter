@@ -20,7 +20,13 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Coming Soon
+
+## Todo
+
+TODO: Usage instructions!
+TODO: Game master integration
+TODO: Tests
 
 ## Contributing
 
