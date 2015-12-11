@@ -24,9 +24,9 @@ Coming Soon
 
 ## Todo
 
-TODO: Usage instructions!
-TODO: Game master integration
-TODO: Tests
+* TODO: Usage instructions!
+* TODO: Game master integration
+* TODO: Tests
 
 ## Contributing
 
