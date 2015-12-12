@@ -24,12 +24,24 @@ Or install it yourself as:
 ```ruby
 require 'stockfighter'
 
+# Use the GM to fetch the info automatically
+
+gm = Stockfighter::GM.new("supersecretapikey1234567")
+first_steps_config = gm.fetch_info_for(level: "first_steps")
+
+api = Stockfighter::Api.new(first_steps_config)
+
+# Or initialize manually
+
 key = "supersecretapikey1234567"
 account = "ACT123456789"
 symbol = "ABC"
 venue = "DEFGHEX"
 
 api = Stockfighter::Api.new(key: key, account: account, symbol: symbol, venue: venue)
+
+# Print the order book
+puts api.order_book
 
 # Check if the venue is up
 puts api.venue_up?
@@ -62,7 +74,7 @@ puts api.status_all
 ## Todo
 
 * ~~TODO: Usage instructions!~~
-* TODO: Game master integration
+* ~~TODO: Game master integration~~
 * TODO: Tests
 
 ## Contributing
