@@ -27,7 +27,7 @@ require 'stockfighter'
 # Use the GM to fetch the info automatically
 
 gm = Stockfighter::GM.new("supersecretapikey1234567")
-first_steps_config = gm.fetch_info_for(level: "first_steps")
+first_steps_config = gm.config_for(level: "first_steps")
 
 api = Stockfighter::Api.new(first_steps_config)
 
