@@ -91,6 +91,7 @@ api = Stockfighter::Api.new(key: key, account: account, symbol: symbol, venue: v
 * ~~TODO: Usage instructions!~~
 * ~~TODO: Game master integration~~
 * TODO: Tests
+* TODO: Error Handling
 
 ## Contributing
 
