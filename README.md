@@ -26,19 +26,25 @@ require 'stockfighter'
 
 # Use the GM to fetch the info automatically
 
-gm = Stockfighter::GM.new("supersecretapikey1234567")
-first_steps_config = gm.config_for(level: "first_steps")
+gm = Stockfighter::GM.new(key: "supersecretapikey1234567", level: "first_steps")
 
-api = Stockfighter::Api.new(first_steps_config)
+api = Stockfighter::Api.new(gm.config)
 
-# Or initialize manually
+# Restart the level
 
-key = "supersecretapikey1234567"
-account = "ACT123456789"
-symbol = "ABC"
-venue = "DEFGHEX"
+gm.restart
 
-api = Stockfighter::Api.new(key: key, account: account, symbol: symbol, venue: venue)
+# Resume the level
+
+gm.resume
+
+# Stop the level
+
+gm.stop
+
+# Check if the level is active
+
+gm.active?
 
 # Print the order book
 puts api.order_book
@@ -68,6 +74,15 @@ puts cancellation["totalFilled"]
 
 # Print the status of all your orders for the stock on the venue
 puts api.status_all
+
+# API can also be initialized manually
+
+key = "supersecretapikey1234567"
+account = "ACT123456789"
+symbol = "ABC"
+venue = "DEFGHEX"
+
+api = Stockfighter::Api.new(key: key, account: account, symbol: symbol, venue: venue)
 
 ```
 
