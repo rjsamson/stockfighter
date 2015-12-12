@@ -1,6 +1,6 @@
 # Stockfighter
 
-A gem for interacting with the Stockfighter.io API.
+A gem for interacting with the [Stockfighter.io](https://www.stockfighter.io) API.
 
 ## Installation
 
