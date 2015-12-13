@@ -26,7 +26,7 @@ module Stockfighter
     def restart
       if @instance_id
         resp = HTTParty.post("#{GM_URL}/instances/#{@instance_id}/restart", :headers => {"X-Starfighter-Authorization" => @api_key})
-        udpate_config(resp)
+        update_config(resp)
       end
     end
 
@@ -50,13 +50,18 @@ module Stockfighter
     end
 
     def update_config(resp)
-      @config = {}
-      @config[:key] = @api_key
-      @config[:account] = resp["account"]
-      @config[:venue] = resp["venues"][0]
-      @config[:symbol] = resp["tickers"][0]
 
-      @instance_id = resp["instanceId"]
+      if resp["ok"]
+        @config = {}
+        @config[:key] = @api_key
+        @config[:account] = resp["account"]
+        @config[:venue] = resp["venues"][0]
+        @config[:symbol] = resp["tickers"][0]
+
+        @instance_id = resp["instanceId"]
+      else 
+        raise "Error response received from #{GM_URL}: #{resp['error']}"
+      end
     end
     private :update_config
   end
