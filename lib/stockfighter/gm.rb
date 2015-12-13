@@ -48,16 +48,16 @@ module Stockfighter
       response = HTTParty.get("#{GM_URL}/instances/#{@instance_id}", :headers => {"X-Starfighter-Authorization" => @api_key})
       response["done"] && response["ok"]
     end
-  end
 
-  def update_config(resp)
-    @config = {}
-    @config[:key] = @api_key
-    @config[:account] = resp["account"]
-    @config[:venue] = resp["venues"][0]
-    @config[:symbol] = resp["tickers"][0]
+    def update_config(resp)
+      @config = {}
+      @config[:key] = @api_key
+      @config[:account] = resp["account"]
+      @config[:venue] = resp["venues"][0]
+      @config[:symbol] = resp["tickers"][0]
 
-    @instance_id = resp["instanceId"]
+      @instance_id = resp["instanceId"]
+    end
+    private :update_config
   end
-  private :update_config
 end
