@@ -50,13 +50,18 @@ module Stockfighter
     end
 
     def update_config(resp)
-      @config = {}
-      @config[:key] = @api_key
-      @config[:account] = resp["account"]
-      @config[:venue] = resp["venues"][0]
-      @config[:symbol] = resp["tickers"][0]
 
-      @instance_id = resp["instanceId"]
+      if resp["ok"]
+        @config = {}
+        @config[:key] = @api_key
+        @config[:account] = resp["account"]
+        @config[:venue] = resp["venues"][0]
+        @config[:symbol] = resp["tickers"][0]
+
+        @instance_id = resp["instanceId"]
+      else 
+        raise "Error response received from #{GM_URL}: #{resp['error']}"
+      end
     end
     private :update_config
   end
