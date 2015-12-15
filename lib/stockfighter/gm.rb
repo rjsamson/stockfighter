@@ -62,6 +62,8 @@ module Stockfighter
       if response.key?('flash')
         if response['flash'].key?('success')
           puts "\e[#32m#{response['flash']['success']}\e[0m"
+        elsif response['flash'].key?('info')
+          puts "\e[#34m#{response['flash']['info']}\e[0m"
         else
           raise "TODO: Unhandled flash scenario: #{response}"
         end
