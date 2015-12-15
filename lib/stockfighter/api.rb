@@ -42,13 +42,17 @@ module Stockfighter
       headers: {"X-Starfighter-Authorization" => @api_key}).parsed_response
     end
 
-    def block_until_order_filled(order_id)
+    def block_until_order_filled(order_id, gm)
       puts "Blocking until order #{order_id} is filled"
 
       loop do 
         quote = get_quote
         order_status = order_status(order_id)
         puts "Order Status: #{order_status['direction']} #{order_status['originalQty']} #{order_status['symbol']}.#{order_status['venue']} @ #{order_status['price']} FilledQuantity:#{order_status['totalFilled']} Last Price: #{quote['last']}"
+
+        #Calling get instance to ensure we pick up any flash informational messages from the game
+        gm.get_instance()
+
         break if not order_status["open"]
       end       
     end
