@@ -35,20 +35,20 @@ module Stockfighter
     end
 
     def order_status(order_id)
-      HTTParty.get("https://api.stockfighter.io/ob/api/venues/#{@venue}/stocks/#{@symbol}/orders/#{order_id}", :headers => {"X-Starfighter-Authorization" => @api_key}).parsed_response
+      HTTParty.get("#{BASE_URL}/venues/#{@venue}/stocks/#{@symbol}/orders/#{order_id}", :headers => {"X-Starfighter-Authorization" => @api_key}).parsed_response
     end
 
     def order_book
-      HTTParty.get("#{BASE_URL}/venues/#{@venue}/stocks/#{@symbol}", {"X-Starfighter-Authorization" => @api_key}).parsed_response
+      HTTParty.get("#{BASE_URL}/venues/#{@venue}/stocks/#{@symbol}", headers: {"X-Starfighter-Authorization" => @api_key}).parsed_response
     end
 
     def venue_up?
-      response = HTTParty.get("#{BASE_URL}/venues/#{@venue}/heartbeat", {"X-Starfighter-Authorization" => @api_key}).parsed_response
+      response = HTTParty.get("#{BASE_URL}/venues/#{@venue}/heartbeat", headers: {"X-Starfighter-Authorization" => @api_key}).parsed_response
       response["ok"]
     end
 
     def status_all
-      HTTParty.get("#{BASE_URL}/venues/#{@venue}/accounts/#{@account}/orders", {"X-Starfighter-Authorization" => @api_key})
+      HTTParty.get("#{BASE_URL}/venues/#{@venue}/accounts/#{@account}/orders", headers: {"X-Starfighter-Authorization" => @api_key})
     end
   end
 end
