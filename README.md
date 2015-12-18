@@ -26,7 +26,20 @@ require 'stockfighter'
 
 # Use the GM to fetch the info automatically
 
-gm = Stockfighter::GM.new(key: "supersecretapikey1234567", level: "first_steps")
+gm = Stockfighter::GM.new(key: "supersecretapikey1234567", level: "first_steps", polling:true)
+
+# Register message callbacks - GM needs to be constructed with polling:true for these callbacks to work
+gm.add_message_callback('success') { |message|
+	puts "\e[#32m#{message}\e[0m"
+}
+gm.add_message_callback('info') { |message|
+	puts "\e[#34m#{message}\e[0m"
+}
+gm.add_state_change_callback { |previous_state, new_state|
+	if new_state == 'won'
+		puts "You've won!"
+	end
+}
 
 api = Stockfighter::Api.new(gm.config)
 
