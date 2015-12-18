@@ -28,6 +28,14 @@ require 'stockfighter'
 
 gm = Stockfighter::GM.new(key: "supersecretapikey1234567", level: "first_steps")
 
+# Register message callbacks 
+gm.add_message_callback('success') { |message|
+	puts "\e[#32m#{message}\e[0m"
+}
+gm.add_message_callback('info') { |message|
+	puts "\e[#34m#{message}\e[0m"
+}
+
 api = Stockfighter::Api.new(gm.config)
 
 # Restart the level
