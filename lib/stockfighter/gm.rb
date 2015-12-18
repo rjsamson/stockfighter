@@ -71,14 +71,6 @@ module Stockfighter
       perform_request("get", "#{GM_URL}/instances/#{@instance_id}")
     end
 
-    def block_until_instance_state(expected_state)
-      loop do
-        current_state = get_instance()['state']
-        puts "Waiting for game instance to change - expected_state: #{expected_state}, current_state: #{current_state}"
-        break if current_state == expected_state
-      end
-    end
-
     def perform_request(action, url)
       response = HTTParty.method(action).call(url, :headers => {"X-Starfighter-Authorization" => @api_key})
       if response.code != 200
