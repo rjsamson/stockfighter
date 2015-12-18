@@ -13,7 +13,7 @@ module Stockfighter
 
       @callback_types = ['success', 'info']
       @message_callbacks = Hash.new { |h,k| h[k] = [] }
-      @state_change_callback = []
+      @state_change_callbacks = []
 
       new_level_response = perform_request("post", "#{GM_URL}/levels/#{level}")
       previous_state = new_level_response['state']
@@ -26,7 +26,7 @@ module Stockfighter
 
           current_state = response['state']
           if previous_state != current_state
-            @state_change_callback.each { |callback|
+            @state_change_callbacks.each { |callback|
               callback.call(previous_state, current_state)
             }
             previous_state = current_state
@@ -41,7 +41,7 @@ module Stockfighter
     end
 
     def add_state_change_callback(&block)
-      @state_change_callback << block
+      @state_change_callbacks << block
     end
 
     def config
