@@ -64,7 +64,7 @@ module Stockfighter
 
     def active?
       response = get_instance()
-      response["done"] && response["ok"]
+      response["done"]
     end
 
     def get_instance
