@@ -18,17 +18,35 @@ Or install it yourself as:
 
     $ gem install stockfighter
 
+## Features
+
+This gem can be used as a simple API client for the trading API, but also
+includes more advanced features for interacting with the (officially undocumented)
+GM API. This includes the ability to start / stop / restart / resume levels,
+automatically fetch level info such as ticker, venue, and account, and also poll
+the GM server regularly and return level and game information.
+
+Support for websockets is not yet included, but will likely be added soon.
+
 ## Usage
+
+Coming soon: comprehensive overview and API overview! For now, take a look at
+some of the sample code below.
 
 ### Example
 ```ruby
 require 'stockfighter'
 
-# Use the GM to fetch the info automatically
+# Use the GM to fetch level info for the trading API automatically
 
-gm = Stockfighter::GM.new(key: "supersecretapikey1234567", level: "first_steps", polling:true)
+gm = Stockfighter::GM.new(key: "supersecretapikey1234567", level: "first_steps")
 
-# Register message callbacks - GM needs to be constructed with polling:true for these callbacks to work
+api = Stockfighter::Api.new(gm.config)
+
+# Use the GM to register message callbacks for messages received from the GM. The GM needs to be initialized with polling: true to set up polling of the GM and enable callbacks.
+
+gm = Stockfighter::GM.new(key: "supersecretapikey1234567", level: "first_steps", polling: true)
+
 gm.add_message_callback('success') { |message|
 	puts "\e[#32m#{message}\e[0m"
 }
@@ -40,16 +58,6 @@ gm.add_state_change_callback { |previous_state, new_state|
 		puts "You've won!"
 	end
 }
-
-# Register message callbacks 
-gm.add_message_callback('success') { |message|
-	puts "\e[#32m#{message}\e[0m"
-}
-gm.add_message_callback('info') { |message|
-	puts "\e[#34m#{message}\e[0m"
-}
-
-api = Stockfighter::Api.new(gm.config)
 
 # Restart the level
 
@@ -112,7 +120,7 @@ api = Stockfighter::Api.new(key: key, account: account, symbol: symbol, venue: v
 * ~~TODO: Usage instructions!~~
 * ~~TODO: Game master integration~~
 * TODO: Tests
-* TODO: Error Handling
+* TODO: Error Handling (partially complete)
 
 ## Contributing
 
