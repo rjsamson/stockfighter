@@ -26,7 +26,7 @@ GM API. This includes the ability to start / stop / restart / resume levels,
 automatically fetch level info such as ticker, venue, and account, and also poll
 the GM server regularly and return level and game information.
 
-Support for websockets is not yet included, but will likely be added soon.
+Support for the websockets API is also available
 
 ## Usage
 
@@ -114,6 +114,18 @@ venue = "DEFGHEX"
 api = Stockfighter::Api.new(key: key, account: account, symbol: symbol, venue: venue)
 
 ```
+
+# Websockets api example
+
+websockets = Stockfighter::Websockets.new(gm.config)
+websockets.add_quote_callback { |quote|
+	puts quote
+}
+websockets.add_execution_callback { |execution|
+	puts execution 
+}
+websockets.start()
+
 
 ## Todo
 
