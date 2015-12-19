@@ -10,6 +10,7 @@ module Stockfighter
       @account = account
       @venue = venue
       @quote_callbacks = []
+      @execution_callbacks = []
     end
 
     def start() 
@@ -33,7 +34,6 @@ module Stockfighter
           end
           if incoming.key?('quote')
             quote = incoming['quote']
-            puts quote
             @quote_callbacks.each { |callback|
                 callback.call(quote)
             }
@@ -63,8 +63,14 @@ module Stockfighter
           puts "executions websocket: Connected"
         end
 
-        executions.onmessage do |msg, type|
-          puts "Received message / executions: #{msg} #{type}"
+        executions.onmessage do |msg|
+          execution = JSON.parse(msg)
+          if not execution["ok"]
+            raise "execution websocket: Error response received: #{msg}"
+          end
+          @execution_callbacks.each { |callback|
+            callback.call(execution)
+          }
         end
 
         executions.onerror do |e|
@@ -87,6 +93,10 @@ module Stockfighter
 
     def add_quote_callback(&block)
       @quote_callbacks << block
+    end
+
+    def add_execution_callback(&block)
+      @execution_callbacks << block
     end
   end
 end
