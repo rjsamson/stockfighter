@@ -50,12 +50,12 @@ module Stockfighter
     def status_all
       HTTParty.get("#{BASE_URL}/venues/#{@venue}/accounts/#{@account}/orders", headers: auth_header)
     end
-    
-    private
-    
-      def auth_header
-        {"X-Starfighter-Authorization" => @api_key}
-      end
-    
+
+    def auth_header
+      {"X-Starfighter-Authorization" => @api_key}
+    end
+
+    private :auth_header
+
   end
 end
