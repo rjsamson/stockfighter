@@ -12,7 +12,7 @@ module Stockfighter
     end
 
     def get_quote
-      HTTParty.get("#{BASE_URL}/venues/#{@venue}/stocks/#{@symbol}/quote", {"X-Starfighter-Authorization" => @api_key}).parsed_response
+      HTTParty.get("#{BASE_URL}/venues/#{@venue}/stocks/#{@symbol}/quote", auth_header).parsed_response
     end
 
     def place_order(price:, quantity:, direction:, order_type:)
@@ -27,28 +27,35 @@ module Stockfighter
       }
 
       HTTParty.post("#{BASE_URL}/venues/#{@venue}/stocks/#{@symbol}/orders", body: JSON.dump(order),
-      headers: {"X-Starfighter-Authorization" => @api_key}).parsed_response
+      headers: auth_header).parsed_response
     end
 
     def cancel_order(order_id)
-      HTTParty.delete("#{BASE_URL}/venues/#{@venue}/stocks/#{@symbol}/orders/#{order_id}", headers: {"X-Starfighter-Authorization" => @api_key})
+      HTTParty.delete("#{BASE_URL}/venues/#{@venue}/stocks/#{@symbol}/orders/#{order_id}", headers: auth_header)
     end
 
     def order_status(order_id)
-      HTTParty.get("#{BASE_URL}/venues/#{@venue}/stocks/#{@symbol}/orders/#{order_id}", :headers => {"X-Starfighter-Authorization" => @api_key}).parsed_response
+      HTTParty.get("#{BASE_URL}/venues/#{@venue}/stocks/#{@symbol}/orders/#{order_id}", headers: auth_header).parsed_response
     end
 
     def order_book
-      HTTParty.get("#{BASE_URL}/venues/#{@venue}/stocks/#{@symbol}", headers: {"X-Starfighter-Authorization" => @api_key}).parsed_response
+      HTTParty.get("#{BASE_URL}/venues/#{@venue}/stocks/#{@symbol}", headers: auth_header).parsed_response
     end
 
     def venue_up?
-      response = HTTParty.get("#{BASE_URL}/venues/#{@venue}/heartbeat", headers: {"X-Starfighter-Authorization" => @api_key}).parsed_response
+      response = HTTParty.get("#{BASE_URL}/venues/#{@venue}/heartbeat", headers: auth_header).parsed_response
       response["ok"]
     end
 
     def status_all
-      HTTParty.get("#{BASE_URL}/venues/#{@venue}/accounts/#{@account}/orders", headers: {"X-Starfighter-Authorization" => @api_key})
+      HTTParty.get("#{BASE_URL}/venues/#{@venue}/accounts/#{@account}/orders", headers: auth_header)
     end
+    
+    private
+    
+      def auth_header
+        {"X-Starfighter-Authorization" => @api_key}
+      end
+    
   end
 end
