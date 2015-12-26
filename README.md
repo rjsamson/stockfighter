@@ -145,5 +145,5 @@ websockets.start()
 4. Push to the branch (`git push origin my-new-feature`)
 5. Write some tests
 6. Run all the tests using the following command:
-	API_KEY="insert_your_api_key_here" rake test
+	`API_KEY="insert_your_api_key_here" rake test`
 7. Create a new Pull Request
