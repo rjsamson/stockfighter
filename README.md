@@ -117,21 +117,24 @@ api = Stockfighter::Api.new(key: key, account: account, symbol: symbol, venue: v
 
 # Websockets api example
 
+```ruby
 websockets = Stockfighter::Websockets.new(gm.config)
 websockets.add_quote_callback { |quote|
 	puts quote
 }
-websockets.add_execution_callback { |execution|
-	puts execution 
-}
-websockets.start()
 
+websockets.add_execution_callback { |execution|
+	puts execution
+}
+
+websockets.start()
+```
 
 ## Todo
 
 * ~~TODO: Usage instructions!~~
 * ~~TODO: Game master integration~~
-* TODO: Tests
+* TODO: Tests!
 * TODO: Error Handling (partially complete)
 
 ## Contributing
