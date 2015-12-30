@@ -47,12 +47,18 @@ api = Stockfighter::Api.new(gm.config)
 
 gm = Stockfighter::GM.new(key: "supersecretapikey1234567", level: "first_steps", polling: true)
 
-gm.add_message_callback('success') { |message|
-	puts "\e[#32m#{message}\e[0m"
+ansi_code = Hash.new
+ansi_code['success'] = "\e[#32m"
+ansi_code['info']    = "\e[#34m"
+ansi_code['warning'] = "\e[#33m"
+ansi_code['error']   = "\e[#31m"
+ansi_code['danger']  = "\e[#31m"
+
+gm.add_message_callback { |type,message|
+	abort("Unhandled message type #{type}") unless ansi_code.key?(type)
+	puts "#{ansi_code[type]}#{message}\e[0m"
 }
-gm.add_message_callback('info') { |message|
-	puts "\e[#34m#{message}\e[0m"
-}
+
 gm.add_state_change_callback { |previous_state, new_state|
 	if new_state == 'won'
 		puts "You've won!"
