@@ -54,13 +54,13 @@ module Stockfighter
           puts "tickertape websocket: Received pong: #{msg}"
         end
 
-        tickertape.onclose do
-          raise "tickertape websocket: Disconnected"
+        tickertape.onclose do |code, reason|
+          raise "tickertape websocket: Client disconnected with status code: #{code} and reason: #{reason}"
         end
 
         executions = WebSocket::EventMachine::Client.connect(:uri => "#{WS_URL}/#{@account}/venues/#{@venue}/executions", :ssl => true)
         executions.onopen do
-          puts "executions websocket: Connected"
+          puts "executions websocket: connected"
         end
 
         executions.onmessage do |msg|
@@ -85,8 +85,8 @@ module Stockfighter
           puts "executions websocket: Received pong: #{msg}"
         end
 
-        executions.onclose do
-          raise "executions websocket: Disconnected"
+        executions.onclose do |code, reason|
+          raise "executions websocket: Client disconnected with status code: #{code} and reason: #{reason}"
         end
       end
     end
