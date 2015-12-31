@@ -120,10 +120,14 @@ api = Stockfighter::Api.new(key: key, account: account, symbol: symbol, venue: v
 ```ruby
 websockets = Stockfighter::Websockets.new(gm.config)
 websockets.add_quote_callback { |quote|
+	# Ensure you don't have long running operations (eg calling api.*) as part of this 
+	# callback method as the event processing for all websockets is performed on 1 thread. 
 	puts quote
 }
 
 websockets.add_execution_callback { |execution|
+	# Ensure you don't have long running operations (eg calling api.*) as part of this 
+	# callback method as the event processing for all websockets is performed on 1 thread. 
 	puts execution
 }
 
