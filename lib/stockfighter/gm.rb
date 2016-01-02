@@ -11,8 +11,7 @@ module Stockfighter
       @api_key = key
       @level = level
 
-      @callback_types = ['success', 'info']
-      @message_callbacks = Hash.new { |h,k| h[k] = [] }
+      @message_callbacks = []
       @state_change_callbacks = []
 
       new_level_response = perform_request("post", "#{GM_URL}/levels/#{level}")
@@ -35,9 +34,8 @@ module Stockfighter
       end
     end
 
-    def add_message_callback(type, &block)
-      raise "Unknown message callback type #{type}" unless @callback_types.include? type
-      @message_callbacks[type] << block
+    def add_message_callback(&block)
+      @message_callbacks << block
     end
 
     def add_state_change_callback(&block)
@@ -84,17 +82,11 @@ module Stockfighter
 
       if response.key?('flash')
         flash = response['flash']
-        if flash.key?('success')
-          @message_callbacks['success'].each { |callback|
-            callback.call(flash['success'])
+        flash.each { |type,message|
+          @message_callbacks.each { |callback|
+            callback.call(type, message)
           }
-        elsif flash.key?('info')
-          @message_callbacks['info'].each { |callback|
-            callback.call(flash['info'])
-          }
-        else
-          raise "TODO: Unhandled flash scenario: #{response}"
-        end
+        }
       end
 
       if response.key?('instructions')
