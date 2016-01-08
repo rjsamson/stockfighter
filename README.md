@@ -43,7 +43,8 @@ gm = Stockfighter::GM.new(key: "supersecretapikey1234567", level: "first_steps")
 
 api = Stockfighter::Api.new(gm.config)
 
-# Use the GM to register message callbacks for messages received from the GM. The GM needs to be initialized with polling: true to set up polling of the GM and enable callbacks.
+# Use the GM to register message callbacks for messages received & trading day notification from the GM. 
+# The GM needs to be initialized with polling: true to set up polling of the GM and enable callbacks.
 
 gm = Stockfighter::GM.new(key: "supersecretapikey1234567", level: "first_steps", polling: true)
 
@@ -63,6 +64,10 @@ gm.add_state_change_callback { |previous_state, new_state|
 	if new_state == 'won'
 		puts "You've won!"
 	end
+}
+
+gm.add_trading_day_callback { |previous_trading_day, current_trading_day, end_of_the_world_day|
+	# Due to the relatively infrequent polling (to avoid rate limiting), the callback will not be called on every individual trading day
 }
 
 # Restart the level
