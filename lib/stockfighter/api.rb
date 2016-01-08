@@ -59,7 +59,7 @@ module Stockfighter
       end
       response = HTTParty.method(action).call(url, options)
 
-      if response.code == 200
+      if response.code == 200 and response["ok"]
         response
       elsif not response["ok"]
         raise "Error response received from #{url}: #{response['error']}"
