@@ -72,7 +72,11 @@ module Stockfighter
     end
 
     def perform_request(action, url)
-      response = HTTParty.method(action).call(url, :headers => {"X-Starfighter-Authorization" => @api_key})
+      options = {
+        :headers => {"X-Starfighter-Authorization" => @api_key},
+        :format => :json
+      }
+      response = HTTParty.method(action).call(url, options)
       if response.code != 200
         raise "HTTP error response received from #{url}: #{response.code}"
       end

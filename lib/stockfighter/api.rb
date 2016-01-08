@@ -51,19 +51,21 @@ module Stockfighter
 
     def perform_request(action, url, body:nil)
       options = {
-        :headers => {"X-Starfighter-Authorization" => @api_key}
+        :headers => {"X-Starfighter-Authorization" => @api_key},
+        :format => :json
       }
       if body != nil
         options[:body] = body
       end
       response = HTTParty.method(action).call(url, options)
-      if response.code != 200
+
+      if response.code == 200
+        response
+      elsif not response["ok"]
+        raise "Error response received from #{url}: #{response['error']}"
+      else
         raise "HTTP error response received from #{url}: #{response.code}"
       end
-      if not response["ok"]
-        raise "Error response received from #{url}: #{response['error']}"
-      end
-      response
     end
 
     private :perform_request
