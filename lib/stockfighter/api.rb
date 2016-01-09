@@ -2,9 +2,8 @@ require 'httparty'
 
 module Stockfighter
   class Api
-    BASE_URL = "https://api.stockfighter.io/ob/api"
-
-    def initialize(key:, account:, symbol:, venue:)
+    def initialize(key:, account:, symbol:, venue:, base_url: "https://api.stockfighter.io/ob/api")
+      @base_url = base_url
       @api_key = key
       @account = account
       @symbol = symbol
@@ -12,7 +11,7 @@ module Stockfighter
     end
 
     def get_quote
-      perform_request("get", "#{BASE_URL}/venues/#{@venue}/stocks/#{@symbol}/quote")
+      perform_request("get", "#{@base_url}/venues/#{@venue}/stocks/#{@symbol}/quote")
     end
 
     def place_order(price:, quantity:, direction:, order_type:)
@@ -25,28 +24,28 @@ module Stockfighter
         "direction" => direction,
         "orderType" => order_type
       }
-      perform_request("post", "#{BASE_URL}/venues/#{@venue}/stocks/#{@symbol}/orders", body: JSON.dump(order))
+      perform_request("post", "#{@base_url}/venues/#{@venue}/stocks/#{@symbol}/orders", body: JSON.dump(order))
     end
 
     def cancel_order(order_id)
-      perform_request("delete", "#{BASE_URL}/venues/#{@venue}/stocks/#{@symbol}/orders/#{order_id}")
+      perform_request("delete", "#{@base_url}/venues/#{@venue}/stocks/#{@symbol}/orders/#{order_id}")
     end
 
     def order_status(order_id)
-      perform_request("get", "#{BASE_URL}/venues/#{@venue}/stocks/#{@symbol}/orders/#{order_id}")
+      perform_request("get", "#{@base_url}/venues/#{@venue}/stocks/#{@symbol}/orders/#{order_id}")
     end
 
     def order_book
-      perform_request("get", "#{BASE_URL}/venues/#{@venue}/stocks/#{@symbol}")
+      perform_request("get", "#{@base_url}/venues/#{@venue}/stocks/#{@symbol}")
     end
 
     def venue_up?
-      response = perform_request("get", "#{BASE_URL}/venues/#{@venue}/heartbeat")
+      response = perform_request("get", "#{@base_url}/venues/#{@venue}/heartbeat")
       response["ok"]
     end
 
     def status_all
-      perform_request("get", "#{BASE_URL}/venues/#{@venue}/accounts/#{@account}/orders")
+      perform_request("get", "#{@base_url}/venues/#{@venue}/accounts/#{@account}/orders")
     end
 
     def perform_request(action, url, body:nil)
