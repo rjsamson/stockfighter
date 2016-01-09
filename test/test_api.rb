@@ -43,6 +43,24 @@ class ApiTest < Minitest::Unit::TestCase
 		assert order.key?('fills')
 	end
 
+	def test_cancel_order_invalid_scenarios
+		api = get_api()
+
+		assert_raises(RuntimeError) {
+			api.cancel_order(1)
+		}
+	end
+
+	def test_cancel_order_happy_day
+		api = get_api()
+
+		order = api.place_order(price:1, quantity:1000000, direction:'buy', order_type:'limit')
+		assert order['open']
+
+		cancel_response = api.cancel_order(order['id'])
+		assert !cancel_response['open']
+	end
+
 	def get_api
 		api_key = ENV['API_KEY']
 		assert api_key.to_s != '', "export API_KEY='secret' before running these tests, where 'secret' is your API key"
