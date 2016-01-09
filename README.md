@@ -143,6 +143,18 @@ websockets.add_execution_callback { |execution|
 }
 
 websockets.start()
+
+# The tickertape websocket can be optionally disabled when calling start()
+
+websockets = Stockfighter::Websockets.new(gm.config)
+websockets.add_execution_callback { |execution|
+	puts execution
+}
+
+websockets.start(tickertape_enabled:false)
+
+# The executions websocket can also be disabled by passing executions_enabled:false when calling start()
+
 ```
 
 ## Todo
