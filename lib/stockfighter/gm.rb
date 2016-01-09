@@ -13,9 +13,11 @@ module Stockfighter
 
       @message_callbacks = []
       @state_change_callbacks = []
+      @trading_day_callbacks = []
 
       new_level_response = perform_request("post", "#{GM_URL}/levels/#{level}")
       previous_state = new_level_response['state']
+      previous_trading_day = 0
 
       if polling
         # websocket API functionality instead of polling would be great here
@@ -30,6 +32,18 @@ module Stockfighter
             }
             previous_state = current_state
           end
+
+          if response.key?('details')
+            details = response['details']
+            current_trading_day = details['tradingDay']
+            end_of_the_world_day = details['endOfTheWorldDay']
+            if previous_trading_day != current_trading_day
+              @trading_day_callbacks.each { |callback|
+                callback.call(previous_trading_day, current_trading_day, end_of_the_world_day)
+              }
+              previous_trading_day = current_trading_day
+            end
+          end
         end
       end
     end
@@ -40,6 +54,10 @@ module Stockfighter
 
     def add_state_change_callback(&block)
       @state_change_callbacks << block
+    end
+
+    def add_trading_day_callback(&block)
+      @trading_day_callbacks << block
     end
 
     def config
