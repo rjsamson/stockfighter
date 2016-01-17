@@ -99,7 +99,8 @@ module Stockfighter
           end
 
           executions.onclose do |code, reason|
-            raise "#{@account} executions websocket: Client disconnected with status code: #{code} and reason: #{reason}"
+            puts "#{@account} executions websocket: Client disconnected with status code: #{code} and reason: #{reason}, reconnecting"
+            executions = WebSocket::EventMachine::Client.connect(executions_options)
           end
         end
       end
