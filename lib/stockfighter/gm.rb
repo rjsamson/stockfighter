@@ -80,6 +80,15 @@ module Stockfighter
       perform_request("post", "#{GM_URL}/instances/#{@instance_id}/resume")
     end
 
+    def judge(account:, explanation_link:, executive_summary:)
+      evidence = {
+        "account" => account,
+        "explanation_link" => explanation_link,
+        "executive_summary" => executive_summary
+      }
+      perform_request("post",  "#{GM_URL}/instances/#{@instance_id}/judge", body: JSON.dump(evidence))
+    end
+
     def active?
       response = get_instance()
       response["done"]
@@ -89,11 +98,14 @@ module Stockfighter
       perform_request("get", "#{GM_URL}/instances/#{@instance_id}")
     end
 
-    def perform_request(action, url)
+    def perform_request(action, url, body:nil)
       options = {
         :headers => {"X-Starfighter-Authorization" => @api_key},
         :format => :json
       }
+      if body != nil
+        options[:body] = body
+      end
       response = HTTParty.method(action).call(url, options)
       if response.code != 200
         raise "HTTP error response received from #{url}: #{response.code}"
@@ -123,9 +135,12 @@ module Stockfighter
         @config = {}
         @config[:key] = @api_key
         @config[:account] = response["account"]
-        @config[:venue] = response["venues"][0]
-        @config[:symbol] = response["tickers"][0]
-
+        if response.key?('venues')
+          @config[:venue] = response["venues"][0]
+        end
+        if response.key?('tickers')
+          @config[:symbol] = response["tickers"][0]
+        end
         @instance_id = response["instanceId"]        
       end
 
