@@ -18,7 +18,7 @@ module Stockfighter
       order = {
         "account" => @account,
         "venue" => @venue,
-        "symbol" => @symbol,
+        "stock" => @symbol,
         "price" => price,
         "qty" => quantity,
         "direction" => direction,
